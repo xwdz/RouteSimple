@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.xwdz.aroutersimple"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    api 'com.alibaba:arouter-api:1.5.0'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+
+    /**
+     *  注意:
+     *     项目有3个module，分别是app、moduleA 、moduleB。
+     *
+     *     app一定要先依赖moduleA、moduleB
+     *
+     *     如果没有这个操作，那么单独的b、c都没有被打包到apk中，怎么跳转呢？
+     *     所以一般是app 依赖 A和B 然后A、B没有依赖关系也可以相互调整。
+     */
+    implementation project(':library0')
+    implementation project(':library1')
+
+}
